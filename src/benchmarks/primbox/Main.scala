@@ -1,12 +1,15 @@
 package benchmarks.primbox
 
-object Main {
+import benchmarks.ComparingBenchmark
 
+object Main {
   def main(args: Array[String]): Unit = {
-    /**
-     * Box to Long, Box to Double, etc.
-     */
-    
+     val comp = new ComparingBenchmark(
+        List(
+            new BoxToDouble(), 
+            new BoxToAny(),
+            new NotBox()))
+    comp.run()
   }
 
 }
