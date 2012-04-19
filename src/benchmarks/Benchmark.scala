@@ -21,6 +21,7 @@ trait Benchmark {
   def name = "untitled"
   
   def timedRun(): Double = {
+    System.gc
     val tb = System.nanoTime
     run()
     val te = System.nanoTime

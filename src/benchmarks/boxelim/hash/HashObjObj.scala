@@ -12,13 +12,13 @@ class HashObjObj extends HashBase with Benchmark {
       val ht = new HashTableObjI(CAP)
       var i = 0
       while (i < N) {
-        ht(i) = i
+        ht(new Integer(i)) = i
         i = i + INC
       }
       
       i = 0
       while (i < N) {
-        s = s + ht(i).asInstanceOf[Int]
+        s = s + ht(new Integer(i)).asInstanceOf[Int]
         i = i + INC
       }
     }

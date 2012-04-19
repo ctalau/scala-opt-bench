@@ -12,7 +12,7 @@ class VectorObjObj extends VectorConstants with Benchmark {
     super.run()
     val v = new VectorObjI();
     for (i <- 0 to MAX){
-        v.setElem(i % N, i);
+        v.setElem(i % N, new Integer(i));
     }
     var sum = 0;
     for (i <- 0 to MAX){
