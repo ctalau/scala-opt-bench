@@ -48,12 +48,19 @@ class ListIntI {
   var hd: Int = _
   var tl: ListIntI = _
 
-  @inline
-  final def map(f: Int => Int): ListIntI = {
-    if (tl == null)
-      ListIntI(f(hd).asInstanceOf[Int], null)
-    else
-      ListIntI(f(hd).asInstanceOf[Int], tl.map(f))
+
+  def map(f: Any => Any): ListIntI = {
+    var cl = this;
+    var l = ListIntI(f(cl.hd).asInstanceOf[Int], null)
+    cl = cl.tl
+    val nl = l
+ 
+    while (cl != null) {
+      l.tl = ListIntI(f(cl.hd).asInstanceOf[Int], null)
+      l = l.tl
+      cl = cl.tl
+    }
+    nl
   }
 }
 

@@ -44,16 +44,23 @@ object ListObj {
   }
 }
 class ListObj { 
-  var hd : Any = _
-  var tl : ListObj = null
-  
-  @inline
-  final def map(f : Any => Any) : ListObj = {
-    if (tl == null)
-      ListObj(f(hd), null)
-    else
-      ListObj(f(hd), tl.map(f))
+  var hd: Any = _
+  var tl: ListObj = _
+
+  def map(f: Any => Any): ListObj = {
+    var cl = this;
+    var l = ListObj(f(cl.hd), null)
+    cl = cl.tl
+    val nl = l
+ 
+    while (cl != null) {
+      l.tl = ListObj(f(cl.hd), null)
+      l = l.tl
+      cl = cl.tl
+    }
+    nl
   }
+ 
 }
 
 

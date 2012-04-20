@@ -37,25 +37,38 @@ class ListObjInt extends ListBase with Benchmark {
 
 object ListInt {
   def apply(_hd: Any, tl: ListInt) = {
-    val hd = _hd.asInstanceOf[Int] 
+    val hd = _hd.asInstanceOf[Int]
     val l = new ListInt();
-    l.hd = hd
+    l.hd = hd.asInstanceOf[Int]
     l.tl = tl
     l
   }
 }
 
+/**
+ * If the map is implemented recursively, nothing is inlined => bad performance
+ */
 class ListInt {
-  var hd: Int = _
+  private var _hd: Int = _
   var tl: ListInt = _
 
-  @inline
-  final def map(f: Any => Any): ListInt = {
-    if (tl == null)
-      ListInt(f(new Integer(hd)).asInstanceOf[Int], null)
-    else
-      ListInt(f(new Integer(hd)).asInstanceOf[Int], tl.map(f))
+  def hd: Any = new Integer(_hd)
+  def hd_=(v: Any) = { _hd = v.asInstanceOf[Int] }
+
+  def map(f: Any => Any): ListInt = {
+    var cl = this;
+    var l = ListInt(f(new Integer(cl._hd)), null)
+    cl = cl.tl
+    val nl = l
+ 
+    while (cl != null) {
+      l.tl = ListInt(f(new Integer(cl._hd)), null)
+      l = l.tl
+      cl = cl.tl
+    }
+    nl
   }
+
 }
 
 

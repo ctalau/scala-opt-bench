@@ -43,7 +43,7 @@ class HashTableObj(capacity: Int) {
   def apply(_key: Any): Any = {
     val key = _key.asInstanceOf[Int]
     
-    val kv = data(indexFor(key))
+    val kv = data(indexFor(new Integer(key)))
     if (kv == null)
       throw new Exception("not found")
     kv._2
@@ -56,6 +56,6 @@ class HashTableObj(capacity: Int) {
     if (size == capacity)
       throw new Exception("Hash full")
     size = size + 1;
-    data(indexFor(key)) = (key, element);
+    data(indexFor(new Integer(key))) = (key, element);
   }
 }
