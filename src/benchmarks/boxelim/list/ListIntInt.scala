@@ -49,7 +49,7 @@ class ListIntI {
   var tl: ListIntI = _
 
 
-  def map(f: Any => Any): ListIntI = {
+  def map(f: Int => Int): ListIntI = {
     var cl = this;
     var l = ListIntI(f(cl.hd).asInstanceOf[Int], null)
     cl = cl.tl

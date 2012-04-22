@@ -11,7 +11,7 @@ object MainVector {
           List(
               new VectorIntInt(), 
               new VectorObjObj(), 
-              new VectorIntObj()))
+              new VectorObjInt()))
       comp.run()
   }
   

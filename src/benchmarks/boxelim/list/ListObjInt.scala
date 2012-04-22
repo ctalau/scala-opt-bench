@@ -39,7 +39,7 @@ object ListInt {
   def apply(_hd: Any, tl: ListInt) = {
     val hd = _hd.asInstanceOf[Int]
     val l = new ListInt();
-    l.hd = hd.asInstanceOf[Int]
+    l.hd = new Integer(hd)
     l.tl = tl
     l
   }
@@ -57,12 +57,12 @@ class ListInt {
 
   def map(f: Any => Any): ListInt = {
     var cl = this;
-    var l = ListInt(f(new Integer(cl._hd)), null)
+    var l = ListInt(f(cl.hd), null)
     cl = cl.tl
     val nl = l
  
     while (cl != null) {
-      l.tl = ListInt(f(new Integer(cl._hd)), null)
+      l.tl = ListInt(f(cl.hd), null)
       l = l.tl
       cl = cl.tl
     }
