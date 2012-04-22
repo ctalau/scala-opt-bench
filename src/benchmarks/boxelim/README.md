@@ -1,3 +1,6 @@
+Specialization strategy
+=======================
+
 We explore a new kind of specialization for generic classes with 
 primitive type arguments. 
   
@@ -21,9 +24,9 @@ setElem(e : Any) = { elem = unbox(a) }
 ```
   becomes:
 ```Scala
-  val a : Int = 0
-  val tmp = box(a)
-  elem = unbox(tmp)
+val a : Int = 0
+val tmp = box(a)
+elem = unbox(tmp)
 ```  
 and a simple peephole optimization will remove the box/unbox pair (or the 
 escape analysis will allocate tmp on the stack).
