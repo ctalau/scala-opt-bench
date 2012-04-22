@@ -36,3 +36,6 @@ The parameters of a generic method are immediately unboxed, to make the
 boxed version short-lived after inlining. When calling a generic method, 
 the arguments are boxed via 'new Integer()'. Integer.valueOf, while 
 good for caching, will not allow stack allocation of the boxed version.
+
+Results
+-------
