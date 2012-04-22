@@ -40,16 +40,16 @@ good for caching, will not allow stack allocation of the boxed version.
 Results
 -------
 
+<pre>
 vector-int-int took 643.0ms
 vector-obj-int took 648.0ms
 vector-obj-obj took 1525.0ms
-
 
 hash-int-int took 755.0ms
 hash-obj-int took 765.0ms
 hash-obj-obj took 811.0ms
 
-
 list-int-int took 295.0ms
 list-obj-int took 307.0ms
 list-obj-obj took 507.0ms
+</pre>
