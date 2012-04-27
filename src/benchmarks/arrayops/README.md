@@ -51,18 +51,23 @@ def T = 20000
 
 <pre>
 boxed took 2021.0ms
+
 raw took 313.0ms
 raw took 434.0ms
 raw took 704.0ms
+
 specialized took 7192.0ms
 specialized took 7135.0ms
 specialized took 7144.0ms
+
 snippet took 11127.0ms
 snippet took 10869.0ms
 snippet took 11424.0ms
+
 switch-classtag took 7851.0ms
 switch-classtag took 8220.0ms
 switch-classtag took 7877.0ms
+
 if-classtag took 8378.0ms
 if-classtag took 8363.0ms
 if-classtag took 9102.0ms
@@ -97,4 +102,31 @@ switch-classtag took 77.0ms
 if-classtag took 49.0ms
 if-classtag took 282.0ms
 if-classtag took 413.0ms
+</pre>
+
+def size = 20000
+def T = 2000
+
+<pre>
+boxed took 2213.0ms
+
+raw took 310.0ms
+raw took 542.0ms
+raw took 4072.0ms
+
+specialized took 341.0ms
+specialized took 550.0ms
+specialized took 929.0ms
+
+snippet took 7027.0ms
+snippet took 6963.0ms
+snippet took 7073.0ms
+
+switch-classtag took 7089.0ms
+switch-classtag took 6707.0ms
+switch-classtag took 6903.0ms
+
+if-classtag took 6714.0ms
+if-classtag took 7097.0ms
+if-classtag took 7262.0ms
 </pre>
