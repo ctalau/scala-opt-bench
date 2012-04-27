@@ -1,12 +1,19 @@
 package benchmarks.arrayops
-/*
-final class IfClassTagsArray(tag: Int) extends ArrayInterface {
+
+import benchmarks.Benchmark
+
+/**
+ * The switch is more general as it leaves the JVM to implement it
+ * with this schema if it wants.
+ */
+
+final class IfClassTagsArray(tag: Int) extends ArrayInterface with Benchmark {
   import ClassTags._
   import Conversions._
 
   override def name = "if-classtag"
 
-  val array = newArray(size)
+  val array = newArray(cst.size)
 
   override def newArray(len: Int) =
     if (tag == UNIT) {
@@ -72,8 +79,6 @@ final class IfClassTagsArray(tag: Int) extends ArrayInterface {
       0
     }
   override def run() = {
-    super.run()
-
     var s = 0
     for (i <- 1 to cst.T) {
       var i = 0
@@ -91,5 +96,3 @@ final class IfClassTagsArray(tag: Int) extends ArrayInterface {
   }
 
 }
-
-*/

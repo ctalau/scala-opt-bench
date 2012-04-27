@@ -3,6 +3,9 @@ package benchmarks.arrayops
 import Conversions._
 import benchmarks.Benchmark
 
+/**
+ * Specialized representation, but uniform interface
+ */
 class SpecializedArrayInt extends ArrayInterface {
   var array : Array[Int] = _
   override def newArray(len: Int): Unit = { array = new Array[Int](len) }
@@ -48,7 +51,7 @@ class SpecializedArrayDoubleRunner extends Benchmark {
     for (j <- 1 to cst.T) {
       var i = 0
       while (i < cst.size) {
-        arr.setElement(i, DoubleToLong(i))
+        arr.setElement(i, DoubleToLong(i.toDouble))
         i += 1
       }
       i = 0
@@ -82,7 +85,7 @@ class SpecializedArrayBooleanRunner extends Benchmark {
       }
       i = 0
       while (i < cst.size) {
-        s &&= LongToBoolean(arr.getElement(i))
+        s ^= LongToBoolean(arr.getElement(i))
         i += 1
       }
     }

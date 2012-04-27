@@ -3,6 +3,10 @@ package benchmarks.arrayops
 import benchmarks.Benchmark
 import cst._
 
+
+/**
+ * Java-like erased version
+ */
 class BoxedArrayDouble {
   var array: Array[Double] = _
   def newArray(len: Int): Unit = { array = new Array[Double](len) }

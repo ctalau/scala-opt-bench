@@ -1,6 +1,7 @@
 package benchmarks.arrayops
-/*
 import Conversions._
+import benchmarks.Benchmark
+
 trait Snippet {
   def newArray(len: Int):Any
   def setElement(array: Any, p: Int, elem: Long)
@@ -29,16 +30,18 @@ object SnippetDouble extends Snippet {
     DoubleToLong(array.asInstanceOf[Array[Double]](p))
 }
 
+/**
+ * The operations are implemented in a dictionary-like object
+ */
 
-final class SnippetArray(snippet : Snippet) extends ArrayInterface {
+final class SnippetArray(snippet : Snippet) extends ArrayInterface with Benchmark {
   override def name = "snippet"
 
-  val array = newArray(size)
+  val array = newArray(cst.size)
   override def newArray(len: Int):Any = snippet.newArray(len)
   override def setElement(p:Int, elem: Long) = snippet.setElement(array, p, elem)
   override def getElement(p:Int) : Long = snippet.getElement(array, p)
   override def run() = {
-    super.run()
     
     var s = 0
     for (i <- 1 to cst.T) {
@@ -58,4 +61,3 @@ final class SnippetArray(snippet : Snippet) extends ArrayInterface {
 
 }
 
-*/
