@@ -2,6 +2,11 @@ package benchmarks.arrayops
 
 import benchmarks.ComparingBenchmark
 
+object cst {
+  def size = 2000
+  def T = 20000
+}
+
 
 object ClassTags {
     final val UNIT = 0
@@ -11,8 +16,8 @@ object ClassTags {
     final val SHORT = 4
     final val INT = 5
     final val LONG = 6
-    final val DOUBLE = 7
-    final val FLOAT = 8
+    final val FLOAT = 7
+    final val DOUBLE = 8
   }
   
 /**
@@ -25,10 +30,19 @@ object MainArrayOps {
     
     val comp = new ComparingBenchmark(
       List(
+          new BoxedArrayDouble(),
+          
+          new RawArrayBoolean(),
+          new RawArrayInt(),
+          new RawArrayDouble(),
+
+          new SpecializedArrayBoolean(),
+          new SpecializedArrayInt(),
+          new SpecializedArrayDouble(),
+          
           new SnippetArray(SnippetBoolean),
           new SnippetArray(SnippetInt),
           new SnippetArray(SnippetDouble),
-          
           
           new SwitchClassTagsArray(BOOLEAN),
           new SwitchClassTagsArray(INT),
@@ -38,6 +52,7 @@ object MainArrayOps {
           new IfClassTagsArray(INT),
           new IfClassTagsArray(DOUBLE)
           ))
+    comp.iter = 7
     comp.run()
 
   }

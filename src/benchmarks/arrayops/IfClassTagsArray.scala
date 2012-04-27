@@ -2,12 +2,15 @@ package benchmarks.arrayops
 
 final class IfClassTagsArray(tag: Int) extends ArrayInterface {
   import ClassTags._
+  import Conversions._
+
+  override def name = "if-classtag"
 
   val array = newArray(size)
 
   override def newArray(len: Int) =
     if (tag == UNIT) {
-      new Array[Unit](len)
+      null
     } else if (tag == BOOLEAN) {
       new Array[Boolean](len)
     } else if (tag == BYTE) {
@@ -28,9 +31,8 @@ final class IfClassTagsArray(tag: Int) extends ArrayInterface {
 
   override def setElement(i: Int, elem: Long) =
     if (tag == UNIT) {
-      array.asInstanceOf[Array[Unit]](i) = elem.asInstanceOf[Long]
     } else if (tag == BOOLEAN) {
-      array.asInstanceOf[Array[Boolean]](i) = elem.asInstanceOf[Boolean]
+      array.asInstanceOf[Array[Boolean]](i) = LongToBoolean(elem)
     } else if (tag == BYTE) {
       array.asInstanceOf[Array[Byte]](i) = elem.asInstanceOf[Byte]
     } else if (tag == CHAR) {
@@ -44,14 +46,14 @@ final class IfClassTagsArray(tag: Int) extends ArrayInterface {
     } else if (tag == FLOAT) {
       array.asInstanceOf[Array[Float]](i) = elem.asInstanceOf[Float]
     } else if (tag == DOUBLE) {
-      array.asInstanceOf[Array[Double]](i) = elem.asInstanceOf[Double]
+      array.asInstanceOf[Array[Double]](i) = LongToDouble(elem)
     }
 
-  override def getElement(i: Int) =
+  override def getElement(i: Int): Long =
     if (tag == UNIT) {
-      array.asInstanceOf[Array[Unit]](i).asInstanceOf[Long]
+      0
     } else if (tag == BOOLEAN) {
-      array.asInstanceOf[Array[Boolean]](i).asInstanceOf[Long]
+      BooleanToLong(array.asInstanceOf[Array[Boolean]](i))
     } else if (tag == BYTE) {
       array.asInstanceOf[Array[Byte]](i).asInstanceOf[Long]
     } else if (tag == CHAR) {
@@ -65,9 +67,28 @@ final class IfClassTagsArray(tag: Int) extends ArrayInterface {
     } else if (tag == FLOAT) {
       array.asInstanceOf[Array[Float]](i).asInstanceOf[Long]
     } else if (tag == DOUBLE) {
-      array.asInstanceOf[Array[Double]](i).asInstanceOf[Long]
+      DoubleToLong(array.asInstanceOf[Array[Double]](i))
     } else {
       0
     }
+  override def run() = {
+    super.run()
+
+    var s = 0
+    for (i <- 1 to cst.T) {
+      var i = 0
+      while (i < cst.size) {
+        setElement(i, i)
+        i += 1
+      }
+      i = 0
+      while (i < cst.size) {
+        s += getElement(i).asInstanceOf[Int]
+        i += 1
+      }
+    }
+    log("" + s)
+  }
+
 }
 

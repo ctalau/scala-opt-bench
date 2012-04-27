@@ -1,14 +1,18 @@
 package benchmarks.arrayops
 
+import Conversions._
+
 final class SwitchClassTagsArray(tag: Int) extends ArrayInterface {
   import ClassTags._
+
+  override def name = "switch-classtag"
 
   val array = newArray(size)
   
   override def newArray(len : Int) =
     tag match {
     case UNIT =>
-      new Array[Unit](len)
+      null
     case BOOLEAN =>
       new Array[Boolean](len)
     case BYTE =>
@@ -26,13 +30,12 @@ final class SwitchClassTagsArray(tag: Int) extends ArrayInterface {
     case DOUBLE =>
       new Array[Double](len)
     }
-
+  
   override def setElement(i: Int, elem: Long) =
     tag match { 
     case UNIT =>
-      array.asInstanceOf[Array[Unit]](i) = elem.asInstanceOf[Long]
     case BOOLEAN =>
-      array.asInstanceOf[Array[Boolean]](i) = elem.asInstanceOf[Boolean]
+      array.asInstanceOf[Array[Boolean]](i) = LongToBoolean(elem)
     case BYTE =>
       array.asInstanceOf[Array[Byte]](i) = elem.asInstanceOf[Byte]
     case CHAR =>
@@ -46,14 +49,14 @@ final class SwitchClassTagsArray(tag: Int) extends ArrayInterface {
     case FLOAT =>
       array.asInstanceOf[Array[Float]](i) = elem.asInstanceOf[Float]
     case DOUBLE =>
-      array.asInstanceOf[Array[Double]](i) = elem.asInstanceOf[Double]
+      array.asInstanceOf[Array[Double]](i) = LongToDouble(elem)
     }
 
   override def getElement(i: Int) = tag match {
     case UNIT =>
-      array.asInstanceOf[Array[Unit]](i).asInstanceOf[Long]
+      0
     case BOOLEAN =>
-      array.asInstanceOf[Array[Boolean]](i).asInstanceOf[Long]
+      BooleanToLong(array.asInstanceOf[Array[Boolean]](i))
     case BYTE =>
       array.asInstanceOf[Array[Byte]](i).asInstanceOf[Long]
     case CHAR =>
@@ -67,6 +70,26 @@ final class SwitchClassTagsArray(tag: Int) extends ArrayInterface {
     case FLOAT =>
       array.asInstanceOf[Array[Float]](i).asInstanceOf[Long]
     case DOUBLE =>
-      array.asInstanceOf[Array[Double]](i).asInstanceOf[Long]
+      DoubleToLong(array.asInstanceOf[Array[Double]](i))
     } 
+
+  override def run() = {
+    super.run()
+    
+    var s = 0
+    for (i <- 1 to cst.T) {
+      var i = 0
+      while (i < cst.size) {
+        setElement(i, i)
+        i += 1
+      }
+      i = 0
+      while (i < cst.size) {
+        s += getElement(i).asInstanceOf[Int]
+        i += 1
+      }
+    }
+    log(""+s)
+  }
+
 }
