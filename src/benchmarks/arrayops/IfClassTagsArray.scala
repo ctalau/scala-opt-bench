@@ -1,5 +1,5 @@
 package benchmarks.arrayops
-
+/*
 final class IfClassTagsArray(tag: Int) extends ArrayInterface {
   import ClassTags._
   import Conversions._
@@ -92,3 +92,4 @@ final class IfClassTagsArray(tag: Int) extends ArrayInterface {
 
 }
 
+*/

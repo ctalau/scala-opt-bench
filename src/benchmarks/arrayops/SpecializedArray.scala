@@ -1,95 +1,91 @@
 package benchmarks.arrayops
 
 import Conversions._
+import benchmarks.Benchmark
 
 class SpecializedArrayInt extends ArrayInterface {
-  override def name = "specialized"
-  val array : Array[Int] = newArray(size).asInstanceOf[Array[Int]]
+  var array : Array[Int] = _
+  override def newArray(len: Int): Unit = { array = new Array[Int](len) }
+  override def setElement(p:Int, elem: Long) = array(p) = LongToInt(elem)
+  override def getElement(p:Int) : Long = IntToLong(array(p))
+}
 
-  override def newArray(len: Int): Any = new Array[Int](len)
-  override def setElement(p:Int, elem: Long) = 
-    array(p) = elem.asInstanceOf[Int]
-  override def getElement(p:Int) : Long =
-    array(p).asInstanceOf[Long]
-
-    override def run() = {
-    super.run()
-    
+class SpecializedArrayIntRunner extends Benchmark {
+  var arr: SpecializedArrayInt = new SpecializedArrayInt 
+  override def name = "specialized-int"
+  override def setUp = arr.newArray(cst.size)
+  override def run() = {
     var s = 0
-    for (i <- 1 to cst.T) {
+    for (j <- 1 to cst.T) {
       var i = 0
       while (i < cst.size) {
-        setElement(i, i)
+        arr.setElement(i, IntToLong(i))
         i += 1
       }
       i = 0
       while (i < cst.size) {
-        s += getElement(i).asInstanceOf[Int]
+        s += LongToInt(arr.getElement(i))
         i += 1
       }
     }
     log(""+s)
   }
-
 }
 
 class SpecializedArrayDouble extends ArrayInterface {
-  override def name = "specialized"
-  val array : Array[Double] = newArray(size).asInstanceOf[Array[Double]]
+  var array : Array[Double] = _
+  override def newArray(len: Int): Unit = { array = new Array[Double](len) }
+  override def setElement(p:Int, elem: Long) = array(p) = LongToDouble(elem)
+  override def getElement(p:Int) : Long = DoubleToLong(array(p))
+}
 
-  override def newArray(len: Int): Any = new Array[Double](len)
-  override def setElement(p:Int, elem: Long) = 
-    array(p) = LongToDouble(elem)
-  override def getElement(p:Int) : Long =
-    DoubleToLong(array(p))
-
-      override def run() = {
-    super.run()
-    
-    var s = 0
-    for (i <- 1 to cst.T) {
+class SpecializedArrayDoubleRunner extends Benchmark {
+  var arr: SpecializedArrayDouble = new SpecializedArrayDouble 
+  override def name = "specialized-double"
+  override def setUp = arr.newArray(cst.size)
+  override def run() = {
+    var s = 0d
+    for (j <- 1 to cst.T) {
       var i = 0
       while (i < cst.size) {
-        setElement(i, i)
+        arr.setElement(i, DoubleToLong(i))
         i += 1
       }
       i = 0
       while (i < cst.size) {
-        s += getElement(i).asInstanceOf[Int]
+        s += LongToDouble(arr.getElement(i))
         i += 1
       }
     }
     log(""+s)
   }
-
 }
 
 class SpecializedArrayBoolean extends ArrayInterface {
-  override def name = "specialized"
-  val array : Array[Boolean] = newArray(size).asInstanceOf[Array[Boolean]]
+  var array : Array[Boolean] = _
+  override def newArray(len: Int): Unit = { array = new Array[Boolean](len) }
+  override def setElement(p:Int, elem: Long) = array(p) = LongToBoolean(elem)
+  override def getElement(p:Int) : Long = BooleanToLong(array(p))
+}
 
-  override def newArray(len: Int): Any = new Array[Boolean](len)
-  override def setElement(p:Int, elem: Long) = 
-    array(p) = LongToBoolean(elem)
-  override def getElement(p:Int) : Long =
-    BooleanToLong(array(p))
+class SpecializedArrayBooleanRunner extends Benchmark {
+  var arr: SpecializedArrayBoolean = new SpecializedArrayBoolean
+  override def name = "specialized-boolean"
+  override def setUp = arr.newArray(cst.size)
   override def run() = {
-    super.run()
-    
-    var s = 0
-    for (i <- 1 to cst.T) {
+    var s = true
+    for (j <- 1 to cst.T) {
       var i = 0
       while (i < cst.size) {
-        setElement(i, i)
+        arr.setElement(i, BooleanToLong(i%2 == 0))
         i += 1
       }
       i = 0
       while (i < cst.size) {
-        s += getElement(i).asInstanceOf[Int]
+        s &&= LongToBoolean(arr.getElement(i))
         i += 1
       }
     }
     log(""+s)
   }
-
 }

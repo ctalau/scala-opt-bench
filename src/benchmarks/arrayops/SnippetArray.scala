@@ -1,5 +1,5 @@
 package benchmarks.arrayops
-
+/*
 import Conversions._
 trait Snippet {
   def newArray(len: Int):Any
@@ -58,3 +58,4 @@ final class SnippetArray(snippet : Snippet) extends ArrayInterface {
 
 }
 
+*/
