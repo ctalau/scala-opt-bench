@@ -11,13 +11,22 @@ trait Benchmark {
   def name: String
 
   def timedRun(): Double = {
+    timedRun(1)
+  }
+
+  def timedRun(iterations: Int): Double = {
     setUp
     System.gc
     val tb = System.nanoTime
-    run()
+    var i = 0
+    while (i < iterations) {
+      run()
+      i += 1
+    }
     val te = System.nanoTime
     return (te - tb) / 1000000;
   }
+
   
   def log(str: String) = //{}
     println(name + ": " + str)

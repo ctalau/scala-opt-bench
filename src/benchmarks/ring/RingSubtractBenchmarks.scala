@@ -12,12 +12,12 @@ class RingSpBooleanSubtractBenchmark extends Benchmark {
   val data : Array[Boolean] = RingBenchmarks.booleans
   
   override def run() = {
-    var total = ring.zero
+    var total = LongToBoolean(ring.zero)
     var i = 0
     val len = data.length
-    while (i < len) { total = ring.minus(total, BooleanToLong(data(i))); i += 1 }
+    var j = 0; while(j < 20000) { while (i < len) { total = LongToBoolean(ring.minus(BooleanToLong(total), BooleanToLong(data(i)))); i += 1 };  j += 1}
     total
-    //log("" + LongToBoolean(total))
+    log("" + (total))
   }
 }
 class RingSpIntSubtractBenchmark extends Benchmark {
@@ -26,12 +26,12 @@ class RingSpIntSubtractBenchmark extends Benchmark {
   val data : Array[Int] = RingBenchmarks.ints
   
   override def run() = {
-    var total = ring.zero
+    var total = LongToInt(ring.zero)
     var i = 0
     val len = data.length
-    while (i < len) { total = ring.minus(total, IntToLong(data(i))); i += 1 }
+    var j = 0; while(j < 20000) { while (i < len) { total = LongToInt(ring.minus(IntToLong(total), IntToLong(data(i)))); i += 1 };  j += 1}
     total
-    //log("" + LongToInt(total))
+    log("" + (total))
   }
 }
 class RingSpDoubleSubtractBenchmark extends Benchmark {
@@ -40,13 +40,14 @@ class RingSpDoubleSubtractBenchmark extends Benchmark {
   val data : Array[Double] = RingBenchmarks.doubles
   
   override def run() = {
-    var total = ring.zero
+    var total = LongToDouble(ring.zero)
     var i = 0
     val len = data.length
-    while (i < len) { total = ring.minus(total, DoubleToLong(data(i))); i += 1 }
+    var j = 0; while(j < 20000) { while (i < len) { total = LongToDouble(ring.minus(DoubleToLong(total), DoubleToLong(data(i)))); i += 1 };  j += 1}
     total
-    //log("" + LongToDouble(total))
+    log("" + (total))
   }
+
 }
 
 /**
@@ -61,9 +62,9 @@ class RawRingSpBooleanSubtractBenchmark extends Benchmark {
     var total = ring.zero
     var i = 0
     val len = data.length
-    while (i < len) { total = ring.minus(total, data(i)); i += 1 }
+    var j = 0; while(j < 20000) { while (i < len) { total = ring.minus(total, data(i)); i += 1 };  j += 1}
     total
-    //log("" + total)
+    log("" + total)
   }
 }
 class RawRingSpIntSubtractBenchmark extends Benchmark {
@@ -75,9 +76,9 @@ class RawRingSpIntSubtractBenchmark extends Benchmark {
     var total = ring.zero
     var i = 0
     val len = data.length
-    while (i < len) { total = ring.minus(total, data(i)); i += 1 }
+    var j = 0; while(j < 20000) { while (i < len) { total = ring.minus(total, data(i)); i += 1 };  j += 1}
     total
-    //log("" + total)
+    log("" + total)
   }
 }
 class RawRingSpDoubleSubtractBenchmark extends Benchmark {
@@ -89,9 +90,9 @@ class RawRingSpDoubleSubtractBenchmark extends Benchmark {
     var total = ring.zero
     var i = 0
     val len = data.length
-    while (i < len) { total = ring.minus(total, data(i)); i += 1 }
+    var j = 0; while(j < 20000) { while (i < len) { total = ring.minus(total, data(i)); i += 1 };  j += 1}
     total
-    //log("" + total)
+    log("" + total)
   }
 }
 
@@ -104,12 +105,12 @@ class BoxedRingSpBooleanSubtractBenchmark extends Benchmark {
   val data : Array[Boolean] = RingBenchmarks.booleans
   
   override def run() = {
-    var total = ring.zero
+    var total = AnyToBoolean(ring.zero)
     var i = 0
     val len = data.length
-    while (i < len) { total = ring.minus(total, data(i)); i += 1 }
+    var j = 0; while(j < 20000) { while (i < len) { total = AnyToBoolean(ring.minus(total, data(i))); i += 1 };  j += 1}
     total
-    //log("" + total)
+    log("" + total)
   }
 }
 
@@ -122,9 +123,9 @@ class BoxedRingSpIntSubtractBenchmark extends Benchmark {
     var total = ring.zero
     var i = 0
     val len = data.length
-    while (i < len) { total = ring.minus(total, data(i)); i += 1 }
+    var j = 0; while(j < 20000) { while (i < len) { total = ring.minus(total, data(i)); i += 1 };  j += 1}
     total
-    //log("" + total)
+    log("" + total)
   }
 }
 class BoxedRingSpDoubleSubtractBenchmark extends Benchmark {
@@ -136,8 +137,8 @@ class BoxedRingSpDoubleSubtractBenchmark extends Benchmark {
     var total = ring.zero
     var i = 0
     val len = data.length
-    while (i < len) { total = ring.minus(total, data(i)); i += 1 }
+    var j = 0; while(j < 20000) { while (i < len) { total = ring.minus(total, data(i)); i += 1 };  j += 1}
     total
-    //log("" + total)
+    log("" + total)
   }
 }

@@ -18,6 +18,9 @@ import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassWriter
 import org.objectweb.asm.Opcodes
 import scala.collection.JavaConverters.asScalaBufferConverter
+import java.io.File
+import java.io.DataOutputStream
+import java.io.FileOutputStream
 
 class SpecializingClassLoader(parent: JClassLoader) extends JClassLoader(parent) {
   def this() = { this(null) }
@@ -35,8 +38,11 @@ class SpecializingClassLoader(parent: JClassLoader) extends JClassLoader(parent)
     if (name.startsWith("java")) {
       return super.loadClass(name, resolve)
     } else {
+      println("Loading " + name )
+      
       // Read the template class file
-      val in = classAsStream(name)
+      val templateFileName = name.replace("6", "X")
+      val in = classAsStream(templateFileName)
       val cr = new ClassReader(in);
       val classNode = new ClassNode();
       cr.accept(classNode, 0);
@@ -45,7 +51,8 @@ class SpecializingClassLoader(parent: JClassLoader) extends JClassLoader(parent)
       for (fieldNode <- fieldNodes) {
         if (fieldNode.name.startsWith("tag_")) {
           fieldNode.access |= Opcodes.ACC_STATIC;
-          fieldNode.value = new Integer(17)
+          println(name.charAt(name.size-1) - '0')
+          fieldNode.value = new Integer(name.charAt(name.size-1) - '0')
         }
       }
 
@@ -56,9 +63,12 @@ class SpecializingClassLoader(parent: JClassLoader) extends JClassLoader(parent)
 
         while (insnNodes.hasNext) {
           val insn = insnNodes.next.asInstanceOf[AbstractInsnNode]
-
-          if (insn.getOpcode == Opcodes.GETFIELD || insn.getOpcode == Opcodes.PUTFIELD) {
+          if (insn.isInstanceOf[FieldInsnNode]) {
             val finsn = insn.asInstanceOf[FieldInsnNode]
+            if (finsn.owner == templateFileName.replace(".", "/")) {
+              finsn.owner = name.replace(".", "/")
+            }
+            
             if (finsn.name.startsWith("tag_") /*&& finsn.owner == "test/LoggingTest"*/ ) {
               insn.getOpcode match {
                 case Opcodes.GETFIELD =>
@@ -70,26 +80,37 @@ class SpecializingClassLoader(parent: JClassLoader) extends JClassLoader(parent)
             }
           }
 
+          
+          // rewrite constructor calls & new
           if (insn.getOpcode == Opcodes.NEW) {
             val tinsn = insn.asInstanceOf[TypeInsnNode]
             if (tinsn.desc.contains(SPEC_MARKER)) {
-              //              tinsn.desc = tinsn.desc.replace("X", "13")
+              tinsn.desc = tinsn.desc.replace("X", "6")
             }
           }
 
           if (insn.getOpcode == Opcodes.INVOKESPECIAL) {
             val minsn = insn.asInstanceOf[MethodInsnNode]
             if (minsn.name == "<init>" && minsn.owner.contains(SPEC_MARKER)) {
-              val tag = insn.getPrevious.asInstanceOf[IntInsnNode]
-              //              minsn.owner = minsn.owner.replace("X", "13")
+              val tag = insn.getPrevious.asInstanceOf[IntInsnNode].operand
+              // XXX: put tag instead of 6, but then have to put it again before
+              minsn.owner = minsn.owner.replace("X", "6")
             }
           }
         }
       }
+      
+      classNode.name = name.replace(".", "/")
       // Convert the class to byte array again
       val cw = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
       classNode.accept(cw);
       classBytes = cw.toByteArray
+        val outDir = new File("out/test");
+        outDir.mkdirs();
+        val dout = new DataOutputStream(new FileOutputStream(new File(outDir, name.substring(name.lastIndexOf('.') + 1) + ".class")));
+        dout.write(cw.toByteArray());
+        dout.flush();
+        dout.close();
       // Load the class into the JVM
       val c = defineClass(name, classBytes, 0, classBytes.length)
       if (c == null)

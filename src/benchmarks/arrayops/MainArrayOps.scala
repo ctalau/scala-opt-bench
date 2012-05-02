@@ -14,7 +14,8 @@ object MainArrayOps {
 
   def main(args: Array[String]) {
     import ClassTags._
-
+    val l = List(1,2)
+    l foreach println
     val comp = new ComparingBenchmark(
       List(
         new BoxedArrayDoubleRunner(),
@@ -27,17 +28,22 @@ object MainArrayOps {
         new SpecializedArrayIntRunner(),
         new SpecializedArrayDoubleRunner(),
 
+        new DupSpecializedArrayBooleanRunner(),
+        new DupSpecializedArrayIntRunner(),
+        new DupSpecializedArrayDoubleRunner()
+
         //          new SnippetArray(SnippetBoolean),
         //          new SnippetArray(SnippetInt),
         //          new SnippetArray(SnippetDouble),
 
-        new SwitchClassTagArrayBooleanRunner,
-        new SwitchClassTagArrayIntRunner,
-        new SwitchClassTagArrayDoubleRunner,
+//        new SwitchClassTagArrayBooleanRunner,
+//        new SwitchClassTagArrayIntRunner,
+//        new SwitchClassTagArrayDoubleRunner,
 
-        new SpecSwitchClassTagArrayBooleanRunner,
-        new SpecSwitchClassTagArrayIntRunner,
-        new SpecSwitchClassTagArrayDoubleRunner //          new IfClassTagsArray(BOOLEAN),
+//        new SpecSwitchClassTagArrayBooleanRunner,
+//        new SpecSwitchClassTagArrayIntRunner,
+//        new SpecSwitchClassTagArrayDoubleRunner 
+        //          new IfClassTagsArray(BOOLEAN),
         //          new IfClassTagsArray(INT),
         //          new IfClassTagsArray(DOUBLE)
         ))

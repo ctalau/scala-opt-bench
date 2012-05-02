@@ -1,6 +1,6 @@
 package test;
 
-public class Test0sp0X {
+public class Test0sp0X implements Printer {
   public byte tag_1;
 
   public Test0sp0X(byte tag_1) {

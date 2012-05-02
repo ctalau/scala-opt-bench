@@ -9,7 +9,7 @@ object RingBenchmarks {
     data
   }
 
-  var size: Int = 100000
+  var size: Int = 10000000
   var booleans: Array[Boolean] = null
   var ints: Array[Int] = null
   var doubles: Array[Double] = null
